@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\FrontEnd\ShopController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +16,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('frontend.index');
+});
+
+
+Route::get('shop/product/{id}', [ShopController::class, 'show']);
+
+// Admin routes
+
+Route::prefix("admin")->group(function () {
+    Route::resource("user", UserController::class);
 });

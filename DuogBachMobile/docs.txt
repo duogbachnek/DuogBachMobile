@@ -1,0 +1,32 @@
+Client 
+
+[#1] : Create master page, tái sử dụng lại
+[#2] : Create migrate and database Seed
+[#3] : Create models 
+[#4] : Create relationship
+[#5] : Create Repository cho Product
+
+[#6] : Hiển thị thông tin sản phẩm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Admin
+
+php artisan make:controller Admin/UserController --resource --model=User
+
+php artisan make:migration create_users_table
