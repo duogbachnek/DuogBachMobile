@@ -10,7 +10,7 @@ class Brand extends Model
     use HasFactory;
 
     protected $table = 'brands';
-    protected $primaryKet = 'id';
+    protected $primaryKey = 'id';
     protected $guarded = [];
 
     public function products()

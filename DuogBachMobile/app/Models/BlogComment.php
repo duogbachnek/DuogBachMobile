@@ -10,7 +10,7 @@ class BlogComment extends Model
     use HasFactory;
 
     protected $table = 'blog_comments';
-    protected $primaryKet = 'id';
+    protected $primaryKey = 'id';
     protected $guarded = [];
 
     public function blog()
