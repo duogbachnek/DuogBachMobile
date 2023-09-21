@@ -9,17 +9,24 @@ use Illuminate\Http\Request;
 class ShopController extends Controller
 {
     //
-    // private $productService;
+    private $productService;
 
-    // public function __construct(ProductServiceInterface $productService)
-    // {
-    //     $this->productService = $productService;
-    // }
+    public function __construct(ProductServiceInterface $productService)
+    {
+        $this->productService = $productService;
+    }
 
     public function show($id)
     {
-        // $product = $this->productService->find($id);
-        // return view('front.shop.show', compact('product'));
-        return view('frontend.shop.show');
+        $product = $this->productService->find($id);
+        return view('frontend.shop.show', compact('product'));
+        // return view('frontend.shop.show');
+    }
+
+    public function postComment(Request $request)
+    {
+        $this->productService->create($request->all());
+
+        return redirect()->back();
     }
 }

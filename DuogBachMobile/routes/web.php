@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\FrontEnd\ShopController;
+use App\Models\Product;
+use App\Repositories\Product\ProductRepositoryInterface;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,12 +17,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function (ProductRepositoryInterface $repository) {
     return view('frontend.index');
+    // return $repository->find(1);
 });
 
 
 Route::get('shop/product/{id}', [ShopController::class, 'show']);
+Route::post('shop/product/{id}', [ShopController::class, 'postComment']);
 
 // Admin routes
 

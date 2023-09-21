@@ -10,7 +10,7 @@ class ProductDetail extends Model
     use HasFactory;
 
     protected $table = 'product_details';
-    protected $primaryKet = 'id';
+    protected $primaryKey = 'id';
     protected $guarded = [];
 
     public function product()

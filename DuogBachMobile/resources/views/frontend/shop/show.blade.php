@@ -150,88 +150,64 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="product-pic-zoom">
-                            <img class="product-big-img" src="./img/product-single/product-1.jpg" alt="">
+                            <img class="product-big-img" src="./img/products/{{$product->productImages[0]->path}}" alt="">
                             <div class="zoom-icon">
                                 <i class="fa fa-search-plus"></i>
                             </div>
                         </div>
                         <div class="product-thumbs">
                             <div class="product-thumbs-track ps-slider owl-carousel">
-                                <div class="pt active" data-imgbigurl="img/product-single/product-1.jpg">
-                                    <img src="./img/product-single/product-1.jpg" alt="">
+                                @foreach($product->productImages as $productImage)
+                                <div class="pt active" data-imgbigurl="./img/products/{{$productImage->path}}">
+                                    <img src="./img/products/{{$productImage->path}}" alt="">
                                 </div>
-                                <div class="pt" data-imgbigurl="img/product-single/product-2.jpg">
-                                    <img src="./img/product-single/product-2.jpg" alt="">
-                                </div>
-                                <div class="pt" data-imgbigurl="img/product-single/product-3.jpg">
-                                    <img src="./img/product-single/product-3.jpg" alt="">
-                                </div>
-                                <div class="pt" data-imgbigurl="img/product-single/product-4.jpg">
-                                    <img src="./img/product-single/product-4.jpg" alt="">
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="product-details">
                             <div class="pd-title">
-                                <span>oranges</span>
-                                <h3>Pure Pineapple</h3>
+                                <span>{{$product->tag}}</span>
+                                <h3>{{$product->name}}</h3>
                                 <a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a>
                             </div>
                             <div class="pd-rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star-o"></i>
-                                <span>(5)</span>
+                                @for($i = 0; $i <=5;$i++) @if($i <=$product->avgRating)
+                                    <i class="fa fa-star"></i>
+                                    @else
+                                    <i class="fa fa-star-o"></i>
+                                    @endif
+                                    @endfor
+                                    <span>({{count($product->productComments)}})</span>
                             </div>
                             <div class="pd-desc">
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat molestias
-                                    veritatis facere voluptatum eius, unde quidem assumenda odit? Modi deserunt
-                                    assumenda fugiat, odit ab consequuntur repellendus impedit ipsam eum iusto.
+                                <p>{{$product->content}}
                                 </p>
-                                <h4>$495.00 <span>629.00</span></h4>
+                                @if($product->discount != null)
+                                <h4>${{$product->discount}} <span>${{$product->price}}</span></h4>
+                                @else
+                                <h4>${{$product->price}}</h4>
+                                @endif
                             </div>
                             <div class="pd-color">
                                 <h6>Color</h6>
                                 <div class="pd-color-choose">
+                                    @foreach(array_unique(array_column($product->productDetails->toArray(),'color')) as $productColor)
                                     <div class="cc-item">
-                                        <input type="radio" name="" id="cc-black">
-                                        <label for="cc-black" class="cc-black"></label>
+                                        <input type="radio" name="" id="cc-{{$productColor}}">
+                                        <label for="cc-{{$productColor}}" class="cc-{{$productColor}}"></label>
                                     </div>
-                                    <div class="cc-item">
-                                        <input type="radio" name="" id="cc-yellow">
-                                        <label for="cc-yellow" class="cc-yellow"></label>
-                                    </div>
-                                    <div class="cc-item">
-                                        <input type="radio" name="" id="cc-violet">
-                                        <label for="cc-violet" class="cc-violet"></label>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
                             <div class="pd-size-choose">
+                                @foreach(array_unique(array_column($product->productDetails->toArray(),'size')) as $productSize)
                                 <div class="sc-item">
-                                    <input type="radio" id="sm-size">
-                                    <label for="sm-size">64gb</label>
+                                    <input type="radio" id="sm-{{$productSize}}">
+                                    <label for="sm-{{$productSize}}">{{$productSize}}</label>
                                 </div>
-                                <div class="sc-item">
-                                    <input type="radio" id="sm-size">
-                                    <label for="sm-size">128gb</label>
-                                </div>
-                                <div class="sc-item">
-                                    <input type="radio" id="md-size">
-                                    <label for="md-size">256gb</label>
-                                </div>
-                                <div class="sc-item">
-                                    <input type="radio" id="lg-size">
-                                    <label for="lg-size">512gb</label>
-                                </div>
-                                <div class="sc-item">
-                                    <input type="radio" id="xl-size">
-                                    <label for="xl-size">1T</label>
-                                </div>
+                                @endforeach
                             </div>
                             <div class="quantity">
                                 <div class="quantity">
@@ -242,8 +218,8 @@
                                 </div>
                             </div>
                             <ul class="pd-tags">
-                                <li><span>CATEGORIES</span> : More Accessories. Wallets & Cases</li>
-                                <li><span>TAGS</span> : Clothing, T-shirt, Woman</li>
+                                <li><span>Danh mục</span> : {{$product->productCategory->name}}</li>
+                                <li><span>TAGS</span> : {{$product->tag}}</li>
                             </ul>
                             <div class="pd-share">
                                 <div class="p-code">Sku : 00012</div>
@@ -261,42 +237,14 @@
                                 <li><a class="active" href="#tab-1" data-toggle="tab" role="tab">MÔ TẢ</a>
                                 </li>
                                 <li><a href="#tab-2" data-toggle="tab" role="tab">THÔNG SỐ KỸ THUẬT</a></li>
-                                <li><a href="#tab-3" data-toggle="tab" role="tab">NHẬN XÉT CỦA KHÁCH HÀNG (02)</a></li>
+                                <li><a href="#tab-3" data-toggle="tab" role="tab">NHẬN XÉT CỦA KHÁCH HÀNG ({{count($product->productComments)}})</a></li>
                             </ul>
                         </div>
                         <div class="tab-item-content">
                             <div class="tab-content">
                                 <div class="tab-pane fade-in active" id="tab-1" role="tabpanel">
                                     <div class="product-content">
-                                        <div class="row">
-                                            <div class="col-lg-7">
-                                                <h5>Introduction</h5>
-                                                <p>
-                                                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                                    Esse
-                                                    quia,
-                                                    officiis aspernatur ipsum pariatur repellat expedita beatae
-                                                    nobis
-                                                    cum! Libero mollitia blanditiis iste inventore voluptate
-                                                    quibusdam
-                                                    magni obcaecati nesciunt beatae.
-                                                </p>
-                                                <h5>Features</h5>
-                                                <p>
-                                                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                                    Esse
-                                                    quia,
-                                                    officiis aspernatur ipsum pariatur repellat expedita beatae
-                                                    nobis
-                                                    cum! Libero mollitia blanditiis iste inventore voluptate
-                                                    quibusdam
-                                                    magni obcaecati nesciunt beatae.
-                                                </p>
-                                            </div>
-                                            <div class="col-lg-5">
-                                                <img src="./img/product-single/tab-desc.jpg" alt="">
-                                            </div>
-                                        </div>
+                                        {!!$product->description!!}
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="tab-2" role="tabpanel">
@@ -306,19 +254,20 @@
                                                 <td class="p-catagory">Đánh giá của khách hàng</td>
                                                 <td>
                                                     <div class="pd-rating">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                        <span>(5)</span>
+                                                        @for($i = 0; $i <=5;$i++) @if($i <=$product->avgRating)
+                                                            <i class="fa fa-star"></i>
+                                                            @else
+                                                            <i class="fa fa-star-o"></i>
+                                                            @endif
+                                                            @endfor
+                                                            <span>({{count($product->productComments)}})</span>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="p-catagory">Giá</td>
                                                 <td>
-                                                    <div class="p-price">$495.00</div>
+                                                    <div class="p-price">${{$product->price}}</div>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -330,31 +279,39 @@
                                             <tr>
                                                 <td class="p-catagory">Còn hàng</td>
                                                 <td>
-                                                    <div class="p-stock">22 trong kho</div>
+                                                    <div class="p-stock">{{$product->qty}} trong kho</div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="p-catagory">Cân nặng</td>
                                                 <td>
-                                                    <div class="p-weight">1,3kg</div>
+                                                    <div class="p-weight">{{$product->weight}}kg</div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="p-catagory">Dung Lượng</td>
                                                 <td>
-                                                    <div class="p-size">512GB</div>
+                                                    <div class="p-size">@foreach(array_unique(array_column($product->productDetails->toArray(),'size')) as $productSize){{$productSize}}
+                                                        @endforeach</div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="p-catagory">Màu sắc</td>
+                                                <!-- <td>
+                                                    @foreach(array_unique(array_column($product->productDetails->toArray(),'color')) as $productColor)
+                                                    <span class="cs-{{$productColor}}"></span>
+                                                    @endforeach
+                                                </td> -->
                                                 <td>
-                                                    <span class="cs-color"></span>
+                                                    @foreach(array_unique(array_column($product->productDetails->toArray(),'color')) as $productColor)
+                                                    <span class="cs-color cs-{{$productColor}}"></span>
+                                                    @endforeach
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="p-catagory">Mã hàng</td>
                                                 <td>
-                                                    <div class="p-code">00012</div>
+                                                    <div class="p-code">{{$product->sku}}</div>
                                                 </td>
                                             </tr>
                                         </table>
@@ -362,63 +319,62 @@
                                 </div>
                                 <div class="tab-pane fade" id="tab-3" role="tabpanel">
                                     <div class="customer-review-option">
-                                        <h4>2 Comments</h4>
+                                        <h4>{{count($product->productComments)}} Comments</h4>
                                         <div class="comment-option">
+                                            @foreach($product->productComments as $productComment)
                                             <div class="co-item">
                                                 <div class="avatar-pic">
-                                                    <img src="./img/product-single/avatar-1.png" alt="">
+                                                    <img src="./img/product-single/{{$productComment->users->avatar ?? 'default-avatar.jpg'}}" alt="">
                                                 </div>
                                                 <div class="avatar-text">
                                                     <div class="at-rating">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-o"></i>
+                                                        @for($i = 0; $i <=5;$i++) @if($i <=$product->avgRating)
+                                                            <i class="fa fa-star"></i>
+                                                            @else
+                                                            <i class="fa fa-star-o"></i>
+                                                            @endif
+                                                            @endfor
                                                     </div>
-                                                    <h5>Brandon Kelley <span>27 Aug 2023</span></h5>
-                                                    <div class="at-reply">Nice !</div>
+                                                    <h5>{{$productComment->name}} <span>{{date('M d, Y', strtotime($productComment->create_at))}}</span></h5>
+                                                    <div class="at-reply">{{$productComment->messages}}</div>
                                                 </div>
                                             </div>
-                                            <div class="co-item">
-                                                <div class="avatar-pic">
-                                                    <img src="./img/product-single/avatar-2.png" alt="">
-                                                </div>
-                                                <div class="avatar-text">
-                                                    <div class="at-rating">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                    </div>
-                                                    <h5>Brandon Kelley <span>27 Aug 2023</span></h5>
-                                                    <div class="at-reply">Nice !</div>
-                                                </div>
-                                            </div>
+                                            @endforeach
                                         </div>
-                                        <div class="personal-rating">
-                                            <h6>Your Rating</h6>
-                                            <div class="rating">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star-o"></i>
-                                            </div>
-                                        </div>
+
                                         <div class="leave-comment">
                                             <h4>Để Lại Bình Luận Của Bạn</h4>
-                                            <form action="" class="comment-form">
+                                            <form action="{{route('postComment')}}" method="post" class="comment-form">
+                                            @csrf
+                                                <input type="hidden" name="product_id" value="{{$product->id}}">
+                                                <input type="hidden" name="user_id" value="{{\Illuminate\Support\Facades\Auth::user()->id ?? null}}">
+
                                                 <div class="row">
                                                     <div class="col-lg-6">
-                                                        <input type="text" name="" id="" placeholder="Name">
+                                                        <input type="text" name="name" id="" placeholder="Name">
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="email" name="" id="" placeholder="Email">
+                                                        <input type="email" name="email" id="" placeholder="Email">
                                                     </div>
                                                     <div class="col-lg-12">
-                                                        <textarea name="" id="" placeholder="Messages"></textarea>
+                                                        <textarea name="messages" id="" placeholder="Messages"></textarea>
+                                                        <div class="personal-rating">
+                                                            <h6>Your Rating</h6>
+                                                            <div class="rating">
+                                                                <div class="rate">
+                                                                    <input type="radio" id="star5" name="rating" value="5" />
+                                                                    <label for="star5" title="text">5 stars</label>
+                                                                    <input type="radio" id="star4" name="rating" value="4" />
+                                                                    <label for="star4" title="text">4 stars</label>
+                                                                    <input type="radio" id="star3" name="rating" value="3" />
+                                                                    <label for="star3" title="text">3 stars</label>
+                                                                    <input type="radio" id="star2" name="rating" value="2" />
+                                                                    <label for="star2" title="text">2 stars</label>
+                                                                    <input type="radio" id="star1" name="rating" value="1" />
+                                                                    <label for="star1" title="text">1 star</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         <button class="site-btn" type="submit">Send
                                                             messages</button>
                                                     </div>
